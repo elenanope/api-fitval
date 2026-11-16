@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Pool } from 'pg';
 import { GymClass, GymClassRow, toGymClass } from './gym-class';
+import { CreateClassDto } from './dto/create-class.dto';
 
 @Injectable()
 export class ClassesService {
@@ -39,5 +40,43 @@ export class ClassesService {
             throw new NotFoundException('Clase no encontrada');
         }
         return toGymClass(result.rows[0]);
+    }
+
+    // POST /api/classes
+    async create(dto: CreateClassDto): Promise<GymClass> {
+        const trainer = await this.pool.query('SELECT id FROM trainers WHERE id = $1', [
+            dto.trainerId,
+        ]);
+        if (trainer.rows.length === 0) {
+            throw new BadRequestException('No existe ningún monitor con ese trainerId'); // → 400
+        }
+
+        const result = await this.pool.query<{ id: number }>(
+            `INSERT INTO classes (activity, room, starts_at, spots, trainer_id)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING id`,
+            [dto.activity, dto.room, dto.startsAt, dto.spots, dto.trainerId],
+        );
+
+        return this.findOne(result.rows[0].id);
+    }
+
+    // DELETE /api/classes/:id
+    async remove(id: number): Promise<GymClass> {
+        const gymClass = await this.findOne(id);
+        const result = await this.pool.query<{total: number}>(
+            `SELECT COUNT(*)::int AS total FROM bookings WHERE class_id = $1`,
+            [id]
+        );
+
+        if (result.rows[0].total > 0) {
+            throw new ConflictException('La clase no se puede borrar porque ya tiene reservas');
+        }
+
+        await this.pool.query(
+            `DELETE FROM classes WHERE id = $1`,
+            [id]
+        );
+        return gymClass;
     }
 }

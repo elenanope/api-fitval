@@ -17,3 +17,9 @@ Con la versión `'%${activity}%'` nos aparecen todas las clases que hay (7), ya 
 ```
 
 Al cerrar las comillas y comentar el final del ILIKE puede inyectar una orden para sacar información de la base de datos. De la otra manera no nos aparece ninguna clase, porque ese "nombre de actividad" no aparece en ninguna clase. Esto pasa ya que la consulta y el valor se envían por separado, el texto que sigue a `activity=` se interpreta como texto y ya, no como consulta
+
+## Ejercicio 4.2 - Pregunta 3
+En la API comprobamos que el monitor existe para asegurarnos de que la clase que creamos contiene una clave ajena válida. Si esta no existe, el error que se lanza (400) contiene más detalles. Si no lo hiciéramos el cliente recibiría un código 500 sin más explicación porque no se recogería el error en ningún sitio, aunque sí que se produce porque SQL no permite que guardes una clase con una clave ajena que no existe
+
+## Ejercicio 4.2 - Pregunta 4
+Borrar una clase con reservas es 409 y no 400 porque 409 indica que hay un conflicto. 400 indica que la solicitud no está bien formulada por así decirlo mientras que 409 confirma que la solicitud es correcta, pero no se puede llevar a cabo por otros factores momentáneos
