@@ -23,3 +23,13 @@ En la API comprobamos que el monitor existe para asegurarnos de que la clase que
 
 ## Ejercicio 4.2 - Pregunta 4
 Borrar una clase con reservas es 409 y no 400 porque 409 indica que hay un conflicto. 400 indica que la solicitud no está bien formulada por así decirlo mientras que 409 confirma que la solicitud es correcta, pero no se puede llevar a cabo por otros factores momentáneos
+
+## Parte 4 - Pregunta 5
+El token de Ana lleva dentro los siguientes datos:
+- sub: el id de Ana en la base de deatos
+- iat: cuándo se ha emitido el token
+- exp: cuándo caduca el token
+
+No metemos el rol por varias razones:
+- A Ana le pueden cambiar el rol, por lo que el token quedaría desactualizado
+- Es información pública si tienes el token, por lo que lo más seguro es meter la mínima información posible
