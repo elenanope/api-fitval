@@ -33,3 +33,6 @@ El token de Ana lleva dentro los siguientes datos:
 No metemos el rol por varias razones:
 - A Ana le pueden cambiar el rol, por lo que el token quedaría desactualizado
 - Es información pública si tienes el token, por lo que lo más seguro es meter la mínima información posible
+
+## Parte 5 - Pregunta 6
+El token de recepción funciona aunque se creó cuando era member porque cada vez que se pasa el token (con el id del usuario) se consulta en la base de datos su rol. Si el rol fuera dentro del token aún sería member porque se comprobaría dentro del propio token y no se actualizaría aunque cambiaras el rol de recepción (hasta que el token caduque o vuelva a hacer login)
