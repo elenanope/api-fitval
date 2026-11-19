@@ -37,4 +37,4 @@ describe('toGymClass', () => {
     expect(gymClass).not.toHaveProperty('starts_at');
     expect(gymClass).not.toHaveProperty('trainer_name');
   });
-  });
+});

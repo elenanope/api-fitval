@@ -44,3 +44,8 @@ Con mockResolvedValue *simulas* lo que devuelve la base de datos
 Un test con un Pool falso no puede comprobar lo siguiente:
 - Que el SQL sea correcto (los errores de sintaxis o elementos mal escritos)
 - Los tipos reales que devuelve PostgreSQL, todo llega como strings
+
+## Parte 7 - Pregunta 8
+El correo lleva Date.now() para que cada vez que se ejecute sea un correo distinto ya que el número se actualiza según la hora que es. 
+
+Si ejecutaras los tests una segunda vez con un correo fijo algunos tests como los de register darían un 409, ya que ese correo ya estaría registrado
