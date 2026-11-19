@@ -36,3 +36,11 @@ No metemos el rol por varias razones:
 
 ## Parte 5 - Pregunta 6
 El token de recepción funciona aunque se creó cuando era member porque cada vez que se pasa el token (con el id del usuario) se consulta en la base de datos su rol. Si el rol fuera dentro del token aún sería member porque se comprobaría dentro del propio token y no se actualizaría aunque cambiaras el rol de recepción (hasta que el token caduque o vuelva a hacer login)
+
+## Parte 6 - Pregunta 7
+En el Ejercicio 6.4, el test no necesita PostgreSQL porque ClassesService recibe el Pool por inyección de dependencias, pasándole en el test un objeto falso. 
+Con mockResolvedValue *simulas* lo que devuelve la base de datos
+
+Un test con un Pool falso no puede comprobar lo siguiente:
+- Que el SQL sea correcto (los errores de sintaxis o elementos mal escritos)
+- Los tipos reales que devuelve PostgreSQL, todo llega como strings
