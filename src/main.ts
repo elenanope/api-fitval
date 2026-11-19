@@ -5,7 +5,6 @@ import { configureApp } from './app.config';
 
 process.loadEnvFile();
 
-
 if (existsSync('.env')) process.loadEnvFile();
 
 async function bootstrap() {
@@ -14,4 +13,3 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 3000);
 }
 void bootstrap();
-

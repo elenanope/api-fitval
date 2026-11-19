@@ -1,4 +1,8 @@
-import { ExecutionContext, ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import {
+  ExecutionContext,
+  ForbiddenException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { StaffGuard } from './staff.guard';
 
@@ -23,12 +27,16 @@ describe('StaffGuard', () => {
   it('no deja pasar a un socio', async () => {
     fakeUsersService.findById.mockResolvedValue({ id: 1, role: 'member' });
 
-    await expect(guard.canActivate(context)).rejects.toThrow(ForbiddenException);
+    await expect(guard.canActivate(context)).rejects.toThrow(
+      ForbiddenException,
+    );
   });
 
   it('lanza UnauthorizedException si el usuario ya no existe', async () => {
     fakeUsersService.findById.mockResolvedValue(undefined);
 
-    await expect(guard.canActivate(context)).rejects.toThrow(UnauthorizedException);
+    await expect(guard.canActivate(context)).rejects.toThrow(
+      UnauthorizedException,
+    );
   });
 });

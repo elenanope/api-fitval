@@ -1,5 +1,12 @@
 import { Transform } from 'class-transformer';
-import { IsDateString, IsInt, IsString, MaxLength, Min, MinLength } from 'class-validator';
+import {
+  IsDateString,
+  IsInt,
+  IsString,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class CreateClassDto {
   @Transform(({ value }: { value: unknown }) =>
