@@ -59,3 +59,8 @@ En la parte 2, el texto del usuario se pegaba directamente dentro del SQL, así 
 El login tiene un límite más duro que el resto de rutas porque un posible hacker intentará esa ruta una y otra vez, probando diferentes contraseñas. 
 
 En Render sin `app.set('trust proxy', 1)` se bloquearían todas las peticiones al superar el límite por parte de cualquier usuario (si entre todos los usuarios se realizan en total 20): contaría como si viniera todo de la misma IP 
+
+## Parte 10 - Pregunta 11
+Sin la transacción cada consulta se guarda al ejecutarse: Óscar se guarda, la especialidad 5 también, pero como la especialidad 99 no existe, salta el error y esa no se guarda. Esto último es lo único que no se ha guardado.
+
+Nuria no tiene el id 5 aunque hubiera solo 4 monitores porque al intentar [2, 99] en especialidades ya se ha generado el id 5. El rollback deshizo la fila pero el contador de generador de ids no vuelve atrás

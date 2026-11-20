@@ -115,4 +115,15 @@ describe('API de FitVal', () => {
     const response = await request(app.getHttpServer()).get('/api/v1/health');
     expect(response.headers['x-powered-by']).toBeUndefined();
   });
+
+  it('GET /api/v1/trainers/1 responde 200 con sus especialidades', async () => {
+    const response = await request(app.getHttpServer()).get(
+      '/api/v1/trainers/1',
+    );
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('specialties', [
+      'Ciclo indoor',
+      'Fuerza',
+    ]);
+  });
 });
