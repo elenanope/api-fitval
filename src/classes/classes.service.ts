@@ -5,8 +5,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Pool } from 'pg';
-import { GymClass, GymClassRow, toGymClass } from './gym-class';
+import { GymClass, GymClassPage, GymClassRow, toGymClass } from './gym-class';
 import { CreateClassDto } from './dto/create-class.dto';
+import { ListClassesQueryDto } from './dto/list-classes-query.dto';
+
+const SORT_COLUMNS: Record<ListClassesQueryDto['sort'], string> = {
+  startsAt: 'c.starts_at',
+  activity: 'c.activity',
+  spots: 'c.spots',
+};
 
 @Injectable()
 export class ClassesService {
@@ -86,5 +93,37 @@ export class ClassesService {
 
     await this.pool.query(`DELETE FROM classes WHERE id = $1`, [id]);
     return gymClass;
+  }
+
+  async findPage(query: ListClassesQueryDto): Promise<GymClassPage> {
+    const { page, limit, sort, order } = query;
+    const activity = query.activity ?? null;
+    const direction = order === 'desc' ? 'DESC' : 'ASC';
+    const offset = (page - 1) * limit;
+
+    const result = await this.pool.query<GymClassRow>(
+      `SELECT c.id, c.activity, c.room, c.starts_at, c.spots, t.name AS trainer_name
+       FROM classes c
+       JOIN trainers t ON t.id = c.trainer_id
+       WHERE ($1::text IS NULL OR c.activity ILIKE '%' || $1 || '%')
+       ORDER BY ${SORT_COLUMNS[sort]} ${direction}, c.id
+       LIMIT $2 OFFSET $3`,
+      [activity, limit, offset],
+    );
+
+    const count = await this.pool.query<{ total: number }>(
+      `SELECT COUNT(*)::int AS total FROM classes c
+       WHERE ($1::text IS NULL OR c.activity ILIKE '%' || $1 || '%')`,
+      [activity],
+    );
+    const total = count.rows[0].total;
+
+    return {
+      data: result.rows.map(toGymClass),
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 }
