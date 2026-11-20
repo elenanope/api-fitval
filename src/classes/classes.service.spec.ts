@@ -71,4 +71,20 @@ describe('ClassesService', () => {
       [1],
     );
   });
+
+  it('findPage con limit 3 y 7 clases en total devuelve totalPages 3', async () => {
+    fakePool.query
+      .mockResolvedValueOnce({ rows: [spinningRow] })
+      .mockResolvedValueOnce({ rows: [{ total: 7 }] });
+
+    const result = await service.findPage({
+      page: 1,
+      limit: 3,
+      sort: 'startsAt',
+      order: 'asc',
+    });
+
+    expect(result.total).toBe(7);
+    expect(result.totalPages).toBe(3);
+  });
 });

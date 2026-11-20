@@ -49,3 +49,8 @@ Un test con un Pool falso no puede comprobar lo siguiente:
 El correo lleva Date.now() para que cada vez que se ejecute sea un correo distinto ya que el número se actualiza según la hora que es. 
 
 Si ejecutaras los tests una segunda vez con un correo fijo algunos tests como los de register darían un 409, ya que ese correo ya estaría registrado
+
+## Parte 8 - Pregunta 9
+No es peligroso, ya que el texto que escribe el usuario primero pasa por ListClassesQueryDto, donde sort tiene @IsIn(['startsAt', 'activity', 'spots']), así que como DROP TABLE classes no está en ella, responde 400 antes de llegar al controlador.
+
+En la parte 2, el texto del usuario se pegaba directamente dentro del SQL, así que podía meter cualquier cosa. Aquí ${...} solo puede contener valores que hemos elegido nosotros.
