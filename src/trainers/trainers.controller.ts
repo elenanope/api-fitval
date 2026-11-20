@@ -12,6 +12,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TrainersService } from './trainers.service';
 import { PhotosService } from './photos.service';
@@ -29,6 +30,7 @@ const photoPipe = new ParseFilePipe({
   ],
 });
 
+@ApiTags('trainers')
 @Controller('trainers')
 export class TrainersController {
   constructor(
@@ -43,12 +45,14 @@ export class TrainersController {
 
   @Post()
   @UseGuards(AuthGuard, StaffGuard)
+  @ApiBearerAuth()
   create(@Body() dto: CreateTrainerDto) {
     return this.trainersService.create(dto);
   }
 
   @Post(':id/photo')
   @UseGuards(AuthGuard, StaffGuard)
+  @ApiBearerAuth()
   @UseInterceptors(FileInterceptor('photo'))
   async uploadPhoto(
     @Param('id', ParseIntPipe) id: number,
