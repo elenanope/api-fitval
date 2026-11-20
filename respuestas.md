@@ -54,3 +54,8 @@ Si ejecutaras los tests una segunda vez con un correo fijo algunos tests como lo
 No es peligroso, ya que el texto que escribe el usuario primero pasa por ListClassesQueryDto, donde sort tiene @IsIn(['startsAt', 'activity', 'spots']), así que como DROP TABLE classes no está en ella, responde 400 antes de llegar al controlador.
 
 En la parte 2, el texto del usuario se pegaba directamente dentro del SQL, así que podía meter cualquier cosa. Aquí ${...} solo puede contener valores que hemos elegido nosotros.
+
+## Parte 9 - Pregunta 10
+El login tiene un límite más duro que el resto de rutas porque un posible hacker intentará esa ruta una y otra vez, probando diferentes contraseñas. 
+
+En Render sin `app.set('trust proxy', 1)` se bloquearían todas las peticiones al superar el límite por parte de cualquier usuario (si entre todos los usuarios se realizan en total 20): contaría como si viniera todo de la misma IP 

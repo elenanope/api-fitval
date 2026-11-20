@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { DatabaseModule } from './database/database.module';
 import { PlansModule } from './plans/plans.module';
@@ -8,6 +10,10 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 60_000, limit: 20 }], // 20 peticiones cada 60 segundos
+      errorMessage: 'Demasiadas peticiones. Espera un poco.',
+    }),
     DatabaseModule,
     PlansModule,
     ClassesModule,
@@ -15,5 +21,9 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
+  providers: [
+    // Activa el límite en TODAS las rutas
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+  ],
 })
 export class AppModule {}

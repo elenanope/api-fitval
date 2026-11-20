@@ -1,14 +1,18 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { existsSync } from 'node:fs';
 import { configureApp } from './app.config';
 
-process.loadEnvFile();
-
 if (existsSync('.env')) process.loadEnvFile();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // En Render, las peticiones llegan a través de un proxy:
+  // así Express ve la IP de verdad de cada cliente
+  app.set('trust proxy', 1);
+
   configureApp(app);
   await app.listen(process.env.PORT ?? 3000);
 }
