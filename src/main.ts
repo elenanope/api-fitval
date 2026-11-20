@@ -13,6 +13,8 @@ async function bootstrap() {
   // así Express ve la IP de verdad de cada cliente
   app.set('trust proxy', 1);
 
+  app.useStaticAssets('uploads', { prefix: '/uploads' });
+
   configureApp(app);
   await app.listen(process.env.PORT ?? 3000);
 }
