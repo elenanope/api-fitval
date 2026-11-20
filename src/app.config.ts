@@ -17,7 +17,11 @@ export function configureApp(app: INestApplication) {
     defaultVersion: '1',
   });
 
-  app.use(helmet()); // cabeceras de seguridad en todas las respuestas
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    }),
+  );
 
   // Todos los errores con la misma forma
   app.useGlobalFilters(new AllExceptionsFilter());
