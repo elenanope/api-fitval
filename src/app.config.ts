@@ -3,6 +3,8 @@ import {
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
+import helmet from 'helmet';
+import { AllExceptionsFilter } from './common/all-exceptions.filter';
 
 // La configuración de la app, en un solo sitio.
 // La usan main.ts y los tests, para que todos funcionen igual.
@@ -14,6 +16,11 @@ export function configureApp(app: INestApplication) {
     type: VersioningType.URI,
     defaultVersion: '1',
   });
+
+  app.use(helmet()); // cabeceras de seguridad en todas las respuestas
+
+  // Todos los errores con la misma forma
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // Comprueba los DTO en todas las rutas
   app.useGlobalPipes(
