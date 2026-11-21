@@ -79,3 +79,9 @@ La foto ya no existe y su dirección da 404. Pero `GET /api/v1/trainers/1` sigue
 La foto se había guardado de forma temporal en Render, no en Supabase: en cada deploy Render crea un contenedor nuevo a partir del código del repositorio, y los archivos que se subieron después no están en el repositorio. El photoUrl sí se guarda porque está guardado en la base de datos de Supabase.
 
 Se debería guardar en un servicio de almacenamiento de objetos externo al servidor, como Amazon S3
+
+## Parte 13 - Pregunta 15
+En el 13.8: la Direct connection de Supabase solo tiene una dirección IPv6, y Render no puede conectarse por IPv6. Por eso en los Logs sale ENETUNREACH, que significa que no hay forma de llegar a esa red. El Session pooler tiene una dirección IPv4, y a esa Render sí llega.
+
+En el 13.9: recibo un 401 Unauthorized. El token de Ana se firmó con el secreto antiguo. Al comprobarlo con el nuevo, la firma no coincide y la API lo rechaza.
+Cambiaría el secreto a propósito si se hubiera filtrado o una persona no autorizada tuviera acceso a él
