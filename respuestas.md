@@ -67,3 +67,15 @@ Nuria no tiene el id 5 aunque hubiera solo 4 monitores porque al intentar [2, 99
 
 ## Parte 13 - Pregunta 12
 `Access-Control-Allow-Origin` contiene las direcciones que están autorizadas, por lo que el navegador impide que por ejemplo `otra-web.com` los lea si esta no esta entre esas autorizadas. Postman sí puede porque no es un navegador ni aplica CORS
+
+## Parte 13 - Pregunta 13
+`/api/v1/health` en database devuelve `{"status":"ok","database":"postgres"}`, porque el nombre de la database se encuentra al final de la url: antes acababa en fitval y ahora en postgres.
+
+No he tenido que cambiar nada del código porque la conexión se crea a partir del .env
+
+## Parte 13 - Pregunta 14
+La foto ya no existe y su dirección da 404. Pero `GET /api/v1/trainers/1` sigue devolviendo el mismo photoUrl, aunque ahora apunta a un archivo que no existe.
+
+La foto se había guardado de forma temporal en Render, no en Supabase: en cada deploy Render crea un contenedor nuevo a partir del código del repositorio, y los archivos que se subieron después no están en el repositorio. El photoUrl sí se guarda porque está guardado en la base de datos de Supabase.
+
+Se debería guardar en un servicio de almacenamiento de objetos externo al servidor, como Amazon S3
