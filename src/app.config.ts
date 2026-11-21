@@ -9,6 +9,12 @@ import { AllExceptionsFilter } from './common/all-exceptions.filter';
 // La configuración de la app, en un solo sitio.
 // La usan main.ts y los tests, para que todos funcionen igual.
 export function configureApp(app: INestApplication) {
+  // CORS: solo esta web puede usar la API desde el navegador.
+  // En Render, la dirección sale de la variable CORS_ORIGIN. En tu ordenador, la de Vite.
+  app.enableCors({
+    origin: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
+  });
+
   // Todas las rutas empiezan por /api
   app.setGlobalPrefix('api');
 

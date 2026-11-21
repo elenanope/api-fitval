@@ -64,3 +64,6 @@ En Render sin `app.set('trust proxy', 1)` se bloquearían todas las peticiones a
 Sin la transacción cada consulta se guarda al ejecutarse: Óscar se guarda, la especialidad 5 también, pero como la especialidad 99 no existe, salta el error y esa no se guarda. Esto último es lo único que no se ha guardado.
 
 Nuria no tiene el id 5 aunque hubiera solo 4 monitores porque al intentar [2, 99] en especialidades ya se ha generado el id 5. El rollback deshizo la fila pero el contador de generador de ids no vuelve atrás
+
+## Parte 13 - Pregunta 12
+`Access-Control-Allow-Origin` contiene las direcciones que están autorizadas, por lo que el navegador impide que por ejemplo `otra-web.com` los lea si esta no esta entre esas autorizadas. Postman sí puede porque no es un navegador ni aplica CORS
